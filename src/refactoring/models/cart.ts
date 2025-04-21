@@ -4,25 +4,16 @@ const getPrice = (item: CartItem) => {
   return item.product.price * item.quantity;
 };
 
-const findApplicableDiscount = (
-  quantity: number,
-  discounts: CartItem["product"]["discounts"]
-) => {
-  const discountsSorted = discounts.sort((a, b) => b.quantity - a.quantity);
-
-  return discountsSorted.find((discount) => discount.quantity <= quantity);
-};
-
 const getDiscountedPrice = (item: CartItem) => {
   const { product, quantity } = item;
 
-  const discount = findApplicableDiscount(quantity, product.discounts);
+  const discountRate = getMaxApplicableDiscount(item);
 
-  if (!discount) {
+  if (!discountRate) {
     return getPrice(item);
   }
 
-  return product.price * quantity * (1 - discount.rate);
+  return product.price * quantity * (1 - discountRate);
 };
 
 export const calculateItemTotal = (cartItem: CartItem) => {
@@ -36,13 +27,15 @@ export const calculateItemTotal = (cartItem: CartItem) => {
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
-  return 0;
+  const { product, quantity } = item;
+
+  const discountsSorted = product.discounts.sort((a, b) => b.quantity - a.quantity);
+  const discount = discountsSorted.find((discount) => discount.quantity <= quantity);
+
+  return discount?.rate || 0;
 };
 
-export const calculateCartTotal = (
-  cart: CartItem[],
-  selectedCoupon: Coupon | null
-) => {
+export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
   return {
     totalBeforeDiscount: 0,
     totalAfterDiscount: 0,
