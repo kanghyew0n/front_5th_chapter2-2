@@ -1,7 +1,38 @@
 import { CartItem, Coupon } from "../../types";
 
-export const calculateItemTotal = (item: CartItem) => {
-  return 0;
+const getPrice = (item: CartItem) => {
+  return item.product.price * item.quantity;
+};
+
+const findApplicableDiscount = (
+  quantity: number,
+  discounts: CartItem["product"]["discounts"]
+) => {
+  const discountsSorted = discounts.sort((a, b) => b.quantity - a.quantity);
+
+  return discountsSorted.find((discount) => discount.quantity <= quantity);
+};
+
+const getDiscountedPrice = (item: CartItem) => {
+  const { product, quantity } = item;
+
+  const discount = findApplicableDiscount(quantity, product.discounts);
+
+  if (!discount) {
+    return getPrice(item);
+  }
+
+  return product.price * quantity * (1 - discount.rate);
+};
+
+export const calculateItemTotal = (cartItem: CartItem) => {
+  const { discounts } = cartItem.product;
+
+  if (discounts.length !== 0) {
+    return getDiscountedPrice(cartItem);
+  }
+
+  return getPrice(cartItem);
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
