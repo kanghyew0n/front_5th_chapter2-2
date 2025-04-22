@@ -16,6 +16,7 @@ const getDiscountedPrice = (item: CartItem) => {
   return product.price * quantity * (1 - discountRate);
 };
 
+/** 장바구니 수량에 따른 할인율 적용한 상품 가격 */
 export const calculateItemTotal = (cartItem: CartItem) => {
   const { discounts } = cartItem.product;
 
@@ -26,6 +27,7 @@ export const calculateItemTotal = (cartItem: CartItem) => {
   return getPrice(cartItem);
 };
 
+/** 수량에 따른 최대 할인율 */
 export const getMaxApplicableDiscount = (item: CartItem) => {
   const { product, quantity } = item;
 
@@ -35,6 +37,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return discount?.rate || 0;
 };
 
+/** 쿠폰에 따른 할인율을 적용한 상품 가격 */
 export const getDiscountWithCoupon = (price: Product["price"], selectedCoupon: Coupon | null) => {
   if (!selectedCoupon) {
     return price;
@@ -44,6 +47,7 @@ export const getDiscountWithCoupon = (price: Product["price"], selectedCoupon: C
   return discountType === "amount" ? price - discountValue : price * (1 - discountValue / 100);
 };
 
+/** 장바구니 가격  */
 export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
   const totalBeforeDiscount = cart.reduce((total, item) => total + getPrice(item), 0);
   const totalProductDiscount = cart.reduce((total, item) => total + getDiscountedPrice(item), 0);
@@ -55,8 +59,8 @@ export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | nu
     totalDiscount: totalBeforeDiscount - totalAfterDiscount,
   };
 };
-
-const getRemoveCartItem = (cart: CartItem[], productId: string) => {
+/** 장바구니에서 상품 제거 */
+export const getRemoveCartItem = (cart: CartItem[], productId: string) => {
   return cart.filter((item) => item.product.id !== productId);
 };
 
@@ -69,12 +73,13 @@ const getMaxQuantityCartItem = (cartItem: CartItem, newQuantity: number) => {
 const getUpdateQuantityCartItem = (cart: CartItem[], productId: string, newQuantity: number) => {
   return cart.map((item) => {
     if (item.product.id === productId) {
-      return getMaxQuantityCartItem(item, newQuantity);
+      return getMaxQuantityCartItem(item, item.quantity + newQuantity);
     }
     return item;
   });
 };
 
+/** 장바구니 상품 수량 변경 */
 export const updateCartItemQuantity = (
   cart: CartItem[],
   productId: string,
