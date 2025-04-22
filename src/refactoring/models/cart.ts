@@ -56,10 +56,33 @@ export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | nu
   };
 };
 
+const getRemoveCartItem = (cart: CartItem[], productId: string) => {
+  return cart.filter((item) => item.product.id !== productId);
+};
+
+const getMaxQuantityCartItem = (cartItem: CartItem, newQuantity: number) => {
+  const maxQuantity = cartItem.product.stock;
+  const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
+  return { ...cartItem, quantity: updatedQuantity };
+};
+
+const getUpdateQuantityCartItem = (cart: CartItem[], productId: string, newQuantity: number) => {
+  return cart.map((item) => {
+    if (item.product.id === productId) {
+      return getMaxQuantityCartItem(item, newQuantity);
+    }
+    return item;
+  });
+};
+
 export const updateCartItemQuantity = (
   cart: CartItem[],
   productId: string,
   newQuantity: number
 ): CartItem[] => {
-  return [];
+  if (newQuantity <= 0) {
+    return getRemoveCartItem(cart, productId);
+  }
+
+  return getUpdateQuantityCartItem(cart, productId, newQuantity);
 };
