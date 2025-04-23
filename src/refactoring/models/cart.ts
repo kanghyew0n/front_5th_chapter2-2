@@ -73,7 +73,7 @@ const getMaxQuantityCartItem = (cartItem: CartItem, newQuantity: number) => {
 const getUpdateQuantityCartItem = (cart: CartItem[], productId: string, newQuantity: number) => {
   return cart.map((item) => {
     if (item.product.id === productId) {
-      return getMaxQuantityCartItem(item, item.quantity + newQuantity);
+      return getMaxQuantityCartItem(item, newQuantity);
     }
     return item;
   });

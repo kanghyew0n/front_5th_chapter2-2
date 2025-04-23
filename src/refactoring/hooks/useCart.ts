@@ -7,7 +7,16 @@ export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+  const addToCart = (product: Product) => {
+    const isInCart = cart.some((item) => item.product.id === product.id);
+
+    if (isInCart) {
+      const newQuantity = cart.find((item) => item.product.id === product.id)!.quantity + 1;
+      return updateQuantity(product.id, newQuantity);
+    }
+
+    return setCart((prev) => [...prev, { product, quantity: 1 }]);
+  };
 
   const removeFromCart = (productId: string) => {
     const removedCartItem = getRemoveCartItem(cart, productId);
