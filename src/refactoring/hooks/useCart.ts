@@ -8,14 +8,14 @@ export const useCart = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    const isInCart = cart.some((item) => item.product.id === product.id);
-
-    if (isInCart) {
-      const newQuantity = cart.find((item) => item.product.id === product.id)!.quantity + 1;
-      return updateQuantity(product.id, newQuantity);
-    }
-
-    return setCart((prev) => [...prev, { product, quantity: 1 }]);
+    setCart((prev) => {
+      const isInCart = prev.some((item) => item.product.id === product.id);
+      if (isInCart) {
+        const newQuantity = cart.find((item) => item.product.id === product.id)!.quantity + 1;
+        return updateCartItemQuantity(prev, product.id, newQuantity);
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
   };
 
   const removeFromCart = (productId: string) => {
