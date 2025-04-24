@@ -18,7 +18,7 @@ const ProductEditMode = ({
 }: Props) => {
   const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
 
-  // 수정 완료 핸들러 함수 추가
+  /** 수정 완료 */
   const handleEditComplete = () => {
     if (editingProduct) {
       onProductUpdate(editingProduct);
@@ -26,7 +26,7 @@ const ProductEditMode = ({
     }
   };
 
-  // 새로운 핸들러 함수 추가
+  /** 상품 이름 수정 */
   const handleProductNameUpdate = (productId: string, newName: string) => {
     if (editingProduct && editingProduct.id === productId) {
       const updatedProduct = { ...editingProduct, name: newName };
@@ -34,6 +34,7 @@ const ProductEditMode = ({
     }
   };
 
+  /** 재고 수정 */
   const handleStockUpdate = (productId: string, newStock: number) => {
     const updatedProduct = products.find((p) => p.id === productId);
     if (updatedProduct) {
@@ -43,7 +44,7 @@ const ProductEditMode = ({
     }
   };
 
-  // 새로운 핸들러 함수 추가
+  /** 가격 수정 */
   const handlePriceUpdate = (productId: string, newPrice: number) => {
     if (editingProduct && editingProduct.id === productId) {
       const updatedProduct = { ...editingProduct, price: newPrice };
@@ -51,6 +52,7 @@ const ProductEditMode = ({
     }
   };
 
+  /** 할인 추가 */
   const handleAddDiscount = (productId: string) => {
     const updatedProduct = products.find((p) => p.id === productId);
     if (updatedProduct && editingProduct) {
@@ -64,6 +66,7 @@ const ProductEditMode = ({
     }
   };
 
+  /** 할인 제거 */
   const handleRemoveDiscount = (productId: string, index: number) => {
     const updatedProduct = products.find((p) => p.id === productId);
     if (updatedProduct) {
