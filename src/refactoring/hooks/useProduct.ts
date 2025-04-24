@@ -5,14 +5,14 @@ export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState(initialProducts);
 
   const updateProduct = (editedProduct: Product) => {
-    const updatedProducts = products.map((product) => {
-      if (editedProduct.id === product.id) {
-        return editedProduct;
-      }
-      return product;
+    setProducts((prev) => {
+      return prev.map((product) => {
+        if (editedProduct.id === product.id) {
+          return editedProduct;
+        }
+        return product;
+      });
     });
-
-    setProducts(updatedProducts);
   };
 
   const addProduct = (newProduct: Product) => {
