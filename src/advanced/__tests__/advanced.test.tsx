@@ -5,6 +5,7 @@ import { CartPage } from "../../refactoring/pages/CartPage";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { getAppliedDiscount } from "../../refactoring/models/discount";
+import App from "../../origin/App";
 
 const mockProducts: Product[] = [
   {
@@ -250,7 +251,14 @@ describe("advanced > ", () => {
     });
   });
 
-  test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-    expect(true).toBe(true);
+  describe("자유롭게 작성해보세요.", () => {
+    test("관리자 페이지 버튼을 클릭하면 관리자 페이지가 렌더링 되어야 합니다.", () => {
+      render(<App />);
+
+      const adminButton = screen.getByRole("button", { name: /관리자 페이지/ });
+      fireEvent.click(adminButton);
+
+      expect(screen.getByText(/관리자 페이지/)).toBeInTheDocument();
+    });
   });
 });
