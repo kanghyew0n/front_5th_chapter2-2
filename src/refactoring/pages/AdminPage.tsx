@@ -1,5 +1,5 @@
 import { Coupon, Product } from "../../types.ts";
-import AdminProductList from "../components/admin/AdminProductList.tsx";
+import AdminProductList from "../components/admin/ProductList.tsx";
 import CouponManagement from "../components/admin/CouponManagement.tsx";
 
 interface Props {
