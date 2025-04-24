@@ -1,4 +1,5 @@
 import { Product } from "../../../types";
+import { getMaxDiscount } from "../../models/discount";
 
 interface Props {
   product: Product;
@@ -7,10 +8,6 @@ interface Props {
 }
 
 const ProductItem = ({ product, remainingStock, addToCart }: Props) => {
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
   return (
     <div
       key={product.id}

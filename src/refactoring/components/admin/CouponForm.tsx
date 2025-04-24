@@ -22,6 +22,7 @@ const CouponForm = ({ onCouponAdd }: Props) => {
       discountValue: 0,
     });
   };
+
   return (
     <div className="space-y-2 mb-4">
       <input
