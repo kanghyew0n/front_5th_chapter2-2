@@ -1,13 +1,15 @@
 import { Product } from "../../../types";
+import { getAppliedDiscount } from "../../models/discount";
 
 interface Props {
-  appliedDiscount: number;
   item: { product: Product; quantity: number };
   updateQuantity: (productId: string, newQuantity: number) => void;
   removeFromCart: (productId: string) => void;
 }
 
-const CartItem = ({ appliedDiscount, item, updateQuantity, removeFromCart }: Props) => {
+const CartItem = ({ item, updateQuantity, removeFromCart }: Props) => {
+  const appliedDiscount = getAppliedDiscount(item);
+
   return (
     <div
       key={item.product.id}
