@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { describe, expect, test } from "vitest";
-import {
-  act,
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-  within,
-} from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
+import { CartPage } from "../../refactoring/pages/CartPage";
+import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
@@ -88,12 +81,9 @@ describe("basic > ", () => {
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
-      const addToCartButtonsAtProduct1 =
-        within(product1).getByText("장바구니에 추가");
-      const addToCartButtonsAtProduct2 =
-        within(product2).getByText("장바구니에 추가");
-      const addToCartButtonsAtProduct3 =
-        within(product3).getByText("장바구니에 추가");
+      const addToCartButtonsAtProduct1 = within(product1).getByText("장바구니에 추가");
+      const addToCartButtonsAtProduct2 = within(product2).getByText("장바구니에 추가");
+      const addToCartButtonsAtProduct3 = within(product3).getByText("장바구니에 추가");
 
       // 1. 상품 정보 표시
       expect(product1).toHaveTextContent("상품1");
@@ -227,26 +217,16 @@ describe("basic > ", () => {
       });
       fireEvent.click(screen.getByText("할인 추가"));
 
-      expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
-      ).toBeInTheDocument();
+      expect(screen.queryByText("5개 이상 구매 시 5% 할인")).toBeInTheDocument();
 
       // 할인 삭제
       fireEvent.click(screen.getAllByText("삭제")[0]);
-      expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
-      ).toBeInTheDocument();
+      expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument();
+      expect(screen.queryByText("5개 이상 구매 시 5% 할인")).toBeInTheDocument();
 
       fireEvent.click(screen.getAllByText("삭제")[0]);
-      expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument();
+      expect(screen.queryByText("5개 이상 구매 시 5% 할인")).not.toBeInTheDocument();
 
       // 4. 쿠폰 추가
       fireEvent.change(screen.getByPlaceholderText("쿠폰 이름"), {
